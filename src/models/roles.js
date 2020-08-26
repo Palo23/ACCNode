@@ -1,5 +1,3 @@
-import bcrypt from 'bcryptjs';
-
 module.exports = (sequelize, DataType) => {
     const Roles = sequelize.define('Roles', {
         id: {
@@ -17,7 +15,7 @@ module.exports = (sequelize, DataType) => {
     });
 
     Roles.associate = (models) => {
-        Roles.hasMany(models.Users);
+        Roles.hasMany(models.Users, { foreignKey: 'id_rol' });
     };
 
     return Roles;

@@ -1,5 +1,3 @@
-import bcrypt from 'bcryptjs';
-
 module.exports = (sequelize, DataType) => {
     const Users = sequelize.define('Users', {
         id: {
@@ -24,20 +22,29 @@ module.exports = (sequelize, DataType) => {
             unique: true,
             allowNull: false,
             validate: { notEmpty: true }
-        }
-    }, {
-        instanceMethods: {
-            async generateHash(password) {
-                return await bcrypt.hash(password, bcrypt.genSaltSync(8));
-            },
-            async validPassword(password) {
-                return await bcrypt.compare(password, this.password);
-            }
+        },
+        id_rol: {
+            type: DataType.INTEGER
         }
     });
+    /* 
+        generateHash: async function(password) {
+            return await bcrypt.hash(password, bcrypt.genSaltSync(8));
+        },
+        validPassword: async function(password) {
+            return await bcrypt.compare(password, this.password);
+        } 
+
+    Users.prototype.generateHash = async function(password) {
+        return await bcrypt.hash(password, bcrypt.genSaltSync(8));
+    };
+
+    Users.prototype.validPassword = async function(password) {
+        return await bcrypt.compare(password, this.password);
+    }; */
 
     Users.associate = (models) => {
-        Users.belongsTo(models.Roles);
+        Users.belongsTo(models.Roles, { foreignKey: 'id_rol' });
     };
 
     return Users;
